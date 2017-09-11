@@ -11,8 +11,9 @@ struct YouData {
         this.id = id;
     }
 
-    public YouData new_with_id(string id) {
+    public static YouData with_id(string id) {
         var data = YouData();
+        data.id = id;
 
         File f = File.new_for_uri("http://noembed.com/embed?url=http://youtu.be/" + id);
         DataInputStream data_stream = null;
@@ -44,6 +45,8 @@ struct YouData {
 
             data.title = obj.get_member("title").get_string();
             data.author = obj.get_member("author_name").get_string();
+
+            stdout.printf("%s\n", data.is_valid ? "Yes" : "No");
         } catch(Error err) {
             stdout.printf("Error: %s\n", err.message);
             return YouData();
@@ -51,7 +54,9 @@ struct YouData {
         return data;
     }
 
-    public bool is_valid() {
-        return this.id != null;
+    public bool is_valid {
+        get {
+            return this.id != null;
+        }
     }
 }
