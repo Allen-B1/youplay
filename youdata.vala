@@ -42,10 +42,8 @@ struct YouData {
 
             unowned Json.Object obj = root.get_object();       
 
-            var title = obj.get_member("title").get_string();
-            data.title = title;
-
-            var 
+            data.title = obj.get_member("title").get_string();
+            data.author = obj.get_member("author_name").get_string();
         } catch(Error err) {
             stdout.printf("Error: %s\n", err.message);
             return YouData();
