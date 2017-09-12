@@ -28,7 +28,7 @@ int main(string[] args) {
 
     var content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
     content.valign = Gtk.Align.START;
-    content.expand = true;
+    content.hexpand = true;
     root.pack_end(content);
 
     var author = new Gtk.Label(null);
