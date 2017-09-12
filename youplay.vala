@@ -8,7 +8,7 @@ int main(string[] args) {
     var window = new Gtk.Window();
     window.title = "YouPlay";
     window.set_position(Gtk.WindowPosition.CENTER);
-    window.set_default_size(950, 950);
+    window.set_default_size(950, 750);
     window.destroy.connect(Gtk.main_quit);
 
     var root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
