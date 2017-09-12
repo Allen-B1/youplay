@@ -1,6 +1,42 @@
 /* YouPlay
  */
 
+void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window) {
+    var dialog = new Gtk.Dialog.with_buttons("Load Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
+        "Done", Gtk.ResponseType.ACCEPT, 
+        "Cancel", Gtk.ResponseType.REJECT, null);
+
+    var content_area = dialog.get_content_area();
+    content_area.add(new Gtk.Label("Enter video url"));
+
+    var entry = new Gtk.Entry();
+    entry.margin = 8;
+    content_area.add(entry);
+    content_area.show_all();
+
+    int result = dialog.run();
+    switch(result) {
+    case Gtk.ResponseType.ACCEPT:
+        YouData data = YouData.with_url(entry.text);
+        if(data.is_valid) {
+            title.set_markup("<big><b>" + data.title + "</b></big>");
+            author.set_text(data.author);
+        } else {
+
+            var error_msg = new Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                Gtk.MessageType.ERROR,
+                Gtk.ButtonsType.CLOSE,
+                "%s",
+                data.error);
+
+            error_msg.run();
+            error_msg.close();
+        }
+        break;
+    }
+    dialog.destroy();
+}
+
 int main(string[] args) {
     Gtk.init(ref args);
     
@@ -17,7 +53,10 @@ int main(string[] args) {
     toolbar.vexpand = false;
     toolbar.valign = Gtk.Align.START;
 
-    var toolbar_from_id = new Gtk.ToolButton(null, "ID");
+    var toolbar_from_id = new Gtk.ToolButton(new Gtk.Image.from_icon_name
+        ("document-open",
+        Gtk.IconSize.LARGE_TOOLBAR),
+        "URL");
     toolbar.insert(toolbar_from_id, -1);
 
     root.pack_start(toolbar, false, false, 0);
@@ -43,29 +82,7 @@ int main(string[] args) {
     content.add(author);
 
     toolbar_from_id.button_press_event.connect(() => {
-        var dialog = new Gtk.Dialog.with_buttons("Load Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
-            "Done", Gtk.ResponseType.ACCEPT, 
-            "Cancel", Gtk.ResponseType.REJECT, null);
-
-        var content_area = dialog.get_content_area();
-        var entry = new Gtk.Entry();
-        entry.show();
-        content_area.add(entry);
-
-        int result = dialog.run();
-        switch(result) {
-        case Gtk.ResponseType.ACCEPT:
-            YouData data = YouData.with_id(entry.text);
-            if(data.is_valid) {
-                title.set_markup("<big><b>" + data.title + "</b></big>");
-                author.set_text(data.author);
-            } else {
-                title.set_text("An error occured.");
-                author.set_text("");
-            }
-            break;
-        }            
-        dialog.close();
+        load_video(title, author, window);
         return false;
     });
 

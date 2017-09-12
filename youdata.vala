@@ -19,13 +19,15 @@ struct YouData {
         var data = YouData();
         data.url = url;
 
+        if(url.index_of("://youtu") == -1)
+            return YouData("URL is invalid");
+
         File f = File.new_for_uri("http://noembed.com/embed?url=" + url);
         DataInputStream data_stream = null;
         try {
             data_stream = new DataInputStream(f.read());
         } catch(Error err) {
-            stdout.printf("Error: %s\n", err.message);
-            return YouData();
+            return YouData(err.message);
         }
 
         var text = new StringBuilder();
@@ -48,7 +50,7 @@ struct YouData {
             unowned Json.Object obj = root.get_object();       
 
             if(obj.has_member("error")) {
-                return YouData(obj.get_string_member("error"));
+                return YouData("URL or video ID is invalid");
             }
 
             data.title = obj.get_member("title").get_string();
@@ -60,9 +62,14 @@ struct YouData {
         return data;
     }
 
-    public bool is_valid {
-        get {
-            return this.url != null;
-        }
-    }
+    public bool is_valid { get {
+        return this.url != null;
+    }}
+
+    public string? error { get {
+        if(!this.is_valid)
+            return this.title;
+        else
+            return null;
+    }}
 }
