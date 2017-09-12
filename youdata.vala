@@ -2,20 +2,24 @@ struct YouData {
     public string title;
     public string author;
     public string embed;
-    public string? id; // if null, video doesn't exist
+    public string? url; // if null, video doesn't exist
 
-    public YouData(string title="", string author="", string embed="", string? id=null) {
+    public YouData(string title="", string author="", string embed="", string? url=null) {
         this.title = title;
         this.author = author;
         this.embed = embed;
-        this.id = id;
+        this.url = url;
     }
 
     public static YouData with_id(string id) {
-        var data = YouData();
-        data.id = id;
+        return YouData.with_url("http://youtu.be/" + id);
+    }
 
-        File f = File.new_for_uri("http://noembed.com/embed?url=http://youtu.be/" + id);
+    public static YouData with_url(string url) {
+        var data = YouData();
+        data.url = url;
+
+        File f = File.new_for_uri("http://noembed.com/embed?url=" + url);
         DataInputStream data_stream = null;
         try {
             data_stream = new DataInputStream(f.read());
@@ -43,10 +47,12 @@ struct YouData {
 
             unowned Json.Object obj = root.get_object();       
 
+            if(obj.has_member("error")) {
+                return YouData(obj.get_string_member("error"));
+            }
+
             data.title = obj.get_member("title").get_string();
             data.author = obj.get_member("author_name").get_string();
-
-            stdout.printf("%s\n", data.is_valid ? "Yes" : "No");
         } catch(Error err) {
             stdout.printf("Error: %s\n", err.message);
             return YouData();
@@ -56,7 +62,7 @@ struct YouData {
 
     public bool is_valid {
         get {
-            return this.id != null;
+            return this.url != null;
         }
     }
 }

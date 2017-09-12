@@ -19,6 +19,7 @@ int main(string[] args) {
 
     var id_input = new Gtk.Entry();
     id_input.text = "Aed7TgSbCN0";
+    id_input.placeholder_text = "Enter id here...";
     toolbar.pack_start(id_input, true, true, 0);
 
     var button = new Gtk.Button.with_label("Go!");
@@ -36,6 +37,7 @@ int main(string[] args) {
     author.hexpand = true;
     author.halign = author.valign = Gtk.Align.START;
     author.margin = 12;
+    author.margin_top = 0;
 
     var title = new Gtk.Label(null);
     title.hexpand = true;
@@ -52,6 +54,7 @@ int main(string[] args) {
             author.set_text(data.author);
         } else {
             title.set_text("An error occured.");
+            author.set_text("");
         }
         return false;
     });
