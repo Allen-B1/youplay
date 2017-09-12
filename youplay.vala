@@ -7,7 +7,7 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, bool is_ur
         "Cancel", Gtk.ResponseType.REJECT, null);
 
     var content_area = dialog.get_content_area();
-    content_area.add(new Gtk.Label("Enter video url"));
+    content_area.add(new Gtk.Label("Enter video " + (is_url ? "URL" : "ID")));
 
     var entry = new Gtk.Entry();
     entry.margin = 8;
@@ -18,17 +18,15 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, bool is_ur
     switch(result) {
     case Gtk.ResponseType.ACCEPT:
         YouData data;
-        dialog.destroy();
         if(is_url)
             data = YouData.with_url(entry.text);
         else
             data = YouData.with_id(entry.text);
+        dialog.destroy();
         if(data.is_valid) {
             title.set_markup("<big><b>" + data.title + "</b></big>");
             author.set_text(data.author);
         } else {
-            dialog.destroy();
-
             var error_msg = new Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
                 Gtk.MessageType.ERROR,
                 Gtk.ButtonsType.CLOSE,
@@ -38,6 +36,9 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, bool is_ur
             error_msg.run();
             error_msg.close();
         }
+        break;
+    default:
+        dialog.destroy();
         break;
     }
 }
@@ -73,13 +74,13 @@ int main(string[] args) {
     var load_menu = new Gtk.Menu();
     var load_item = new Gtk.MenuItem.with_label("Load Video");
 
-    var load_from_id = new Gtk.MenuItem.with_label("From id");
+    var load_from_id = new Gtk.MenuItem.with_label("From ID");
     load_from_id.activate.connect(() => {
         load_video(title, author, window, false);
     });
     load_menu.append(load_from_id);
 
-    var load_from_url = new Gtk.MenuItem.with_label("From url");
+    var load_from_url = new Gtk.MenuItem.with_label("From URL");
     load_from_url.activate.connect(() => {
         load_video(title, author, window, true);
     });

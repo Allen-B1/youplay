@@ -19,10 +19,8 @@ struct YouData {
         var data = YouData();
         data.url = url;
 
-        if(url.index_of("://youtu") == -1)
-            return YouData("URL is invalid");
 
-        File f = File.new_for_uri("http://noembed.com/embed?url=" + url);
+        File f = File.new_for_uri("https://noembed.com/embed?url=" + url);
         DataInputStream data_stream = null;
         try {
             data_stream = new DataInputStream(f.read());
