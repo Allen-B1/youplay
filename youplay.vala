@@ -88,7 +88,7 @@ int main(string[] args) {
     content.add(title);
     content.add(author);
 
-    toolbar_from_id.button_press_event.connect(() => {
+    toolbar_from_url.button_press_event.connect(() => {
         load_video(title, author, window, true);
         return false;
     });
