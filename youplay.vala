@@ -10,7 +10,7 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, bool is_ur
     content_area.add(new Gtk.Label("Enter video " + (is_url ? "URL" : "ID")));
 
     var entry = new Gtk.Entry();
-    entry.margin = 8;
+    entry.margin = 4;
     content_area.add(entry);
     content_area.show_all();
 
