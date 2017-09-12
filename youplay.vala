@@ -53,9 +53,19 @@ int main(string[] args) {
 
     var root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
+    var menubar = new Gtk.MenuBar();
+    var file_menu = new Gtk.Menu();
+
+    var file_item = new Gtk.MenuItem.with_label("File");
+    var quit_item = new Gtk.MenuItem.with_label("Quit");
+
+    file_item.set_submenu(file_menu);
+    file_menu.append(quit_item);
+    menubar.append(file_item);
+    root.pack_start(menubar, false, false, 0);
+
     // Toolbar
     var toolbar = new Gtk.Toolbar();
-    toolbar.vexpand = false;
     toolbar.valign = Gtk.Align.START;
 
     // Open video from url
