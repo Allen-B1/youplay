@@ -18,6 +18,7 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, bool is_ur
     switch(result) {
     case Gtk.ResponseType.ACCEPT:
         YouData data;
+        dialog.destroy();
         if(is_url)
             data = YouData.with_url(entry.text);
         else
@@ -26,6 +27,7 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, bool is_ur
             title.set_markup("<big><b>" + data.title + "</b></big>");
             author.set_text(data.author);
         } else {
+            dialog.destroy();
 
             var error_msg = new Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
                 Gtk.MessageType.ERROR,
@@ -38,7 +40,6 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, bool is_ur
         }
         break;
     }
-    dialog.destroy();
 }
 
 int main(string[] args) {
@@ -52,16 +53,41 @@ int main(string[] args) {
     window.destroy.connect(Gtk.main_quit);
 
     var root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+    Gtk.Label title = null;
+    Gtk.Label author = null;
 
     var menubar = new Gtk.MenuBar();
     var file_menu = new Gtk.Menu();
-
     var file_item = new Gtk.MenuItem.with_label("File");
-    var quit_item = new Gtk.MenuItem.with_label("Quit");
 
+    var quit_item = new Gtk.MenuItem.with_label("Quit");
+    quit_item.activate.connect(() => {
+        window.destroy();
+    });
+    
     file_item.set_submenu(file_menu);
     file_menu.append(quit_item);
     menubar.append(file_item);
+
+    // Load menu
+    var load_menu = new Gtk.Menu();
+    var load_item = new Gtk.MenuItem.with_label("Load Video");
+
+    var load_from_id = new Gtk.MenuItem.with_label("From id");
+    load_from_id.activate.connect(() => {
+        load_video(title, author, window, false);
+    });
+    load_menu.append(load_from_id);
+
+    var load_from_url = new Gtk.MenuItem.with_label("From url");
+    load_from_url.activate.connect(() => {
+        load_video(title, author, window, true);
+    });
+    load_menu.append(load_from_url);
+
+    load_item.set_submenu(load_menu);
+    menubar.append(load_item);
+    
     root.pack_start(menubar, false, false, 0);
 
     // Toolbar
@@ -84,13 +110,13 @@ int main(string[] args) {
     content.vexpand = false;
     root.pack_start(content, false, false, 0);
 
-    var author = new Gtk.Label(null);
+    author = new Gtk.Label(null);
     author.hexpand = true;
     author.halign = author.valign = Gtk.Align.START;
     author.margin = 12;
     author.margin_top = 0;
 
-    var title = new Gtk.Label(null);
+    title = new Gtk.Label(null);
     title.hexpand = true;
     title.halign = title.valign = Gtk.Align.START;
     title.margin = 12;
