@@ -1,7 +1,7 @@
 /* YouPlay
  */
 
-void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window) {
+void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, bool is_url) {
     var dialog = new Gtk.Dialog.with_buttons("Load Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
         "Done", Gtk.ResponseType.ACCEPT, 
         "Cancel", Gtk.ResponseType.REJECT, null);
@@ -17,7 +17,11 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window) {
     int result = dialog.run();
     switch(result) {
     case Gtk.ResponseType.ACCEPT:
-        YouData data = YouData.with_url(entry.text);
+        YouData data;
+        if(is_url)
+            data = YouData.with_url(entry.text);
+        else
+            data = YouData.with_id(entry.text);
         if(data.is_valid) {
             title.set_markup("<big><b>" + data.title + "</b></big>");
             author.set_text(data.author);
@@ -49,18 +53,21 @@ int main(string[] args) {
 
     var root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
+    // Toolbar
     var toolbar = new Gtk.Toolbar();
     toolbar.vexpand = false;
     toolbar.valign = Gtk.Align.START;
 
-    var toolbar_from_id = new Gtk.ToolButton(new Gtk.Image.from_icon_name
+    // Open video from url
+    var toolbar_from_url = new Gtk.ToolButton(new Gtk.Image.from_icon_name
         ("document-open",
         Gtk.IconSize.LARGE_TOOLBAR),
         "URL");
-    toolbar.insert(toolbar_from_id, -1);
+    toolbar.insert(toolbar_from_url, -1);
 
     root.pack_start(toolbar, false, false, 0);
 
+    // Title and Author
     var content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
     content.valign = Gtk.Align.START;
     content.hexpand = true;
@@ -82,7 +89,7 @@ int main(string[] args) {
     content.add(author);
 
     toolbar_from_id.button_press_event.connect(() => {
-        load_video(title, author, window);
+        load_video(title, author, window, true);
         return false;
     });
 
