@@ -26,20 +26,29 @@ int main(string[] args) {
 
     root.pack_start(toolbar, true, true, 0);
 
+    var about_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+    about_box.valign = Gtk.Align.END;
+    root.pack_end(about_box);
+
     var author = new Gtk.Label(null);
-    author.valign = Gtk.Align.END;
-    author.vexpand = false;
-    root.pack_end(author, true, true, 0);
+    author.expand = true;
+    author.override_background_color(Gtk.StateFlags.NORMAL, {0,0,0,0});
+    author.halign = Gtk.Align.START;
+    author.margin = 12;
 
     var title = new Gtk.Label(null);
-    title.valign = Gtk.Align.END;
-    title.vexpand = false;
-    root.pack_end(title, true, true, 0);
+    title.override_background_color(Gtk.StateFlags.NORMAL, {0,0,0,0});
+    title.expand = true;
+    title.halign = Gtk.Align.START;
+    title.margin = 12;
+
+    about_box.add(title);
+    about_box.add(author);
 
     button.button_press_event.connect(() => {
         YouData data = YouData.with_id(id_input.text);
         if(data.is_valid) {
-            title.set_markup("<b>" + data.title + "</b>");
+            title.set_markup("<big><b>" + data.title + "</b></big>");
             author.set_text(data.author);
         } else {
             title.set_text("An error occured.");
