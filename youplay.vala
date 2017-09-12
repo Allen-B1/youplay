@@ -24,12 +24,13 @@ int main(string[] args) {
     var button = new Gtk.Button.with_label("Go!");
     toolbar.pack_end(button, true, true, 0);
 
-    root.pack_start(toolbar, true, true, 0);
+    root.pack_start(toolbar, false, false, 0);
 
     var content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
     content.valign = Gtk.Align.START;
     content.hexpand = true;
-    root.pack_end(content);
+    content.vexpand = false;
+    root.pack_start(content, false, false, 0);
 
     var author = new Gtk.Label(null);
     author.hexpand = true;
@@ -38,7 +39,6 @@ int main(string[] args) {
 
     var title = new Gtk.Label(null);
     title.hexpand = true;
-    title.override_background_color(Gtk.StateFlags.NORMAL, {0,0,0,1});
     title.halign = title.valign = Gtk.Align.START;
     title.margin = 12;
 
