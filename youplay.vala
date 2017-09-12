@@ -38,6 +38,7 @@ int main(string[] args) {
 
     var title = new Gtk.Label(null);
     title.hexpand = true;
+    title.override_background_color(Gtk.StateFlags.NORMAL, {0,0,0,1});
     title.halign = title.valign = Gtk.Align.START;
     title.margin = 12;
 
