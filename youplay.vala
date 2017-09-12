@@ -26,24 +26,23 @@ int main(string[] args) {
 
     root.pack_start(toolbar, true, true, 0);
 
-    var about_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-    about_box.valign = Gtk.Align.END;
-    root.pack_end(about_box);
+    var content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+    content.valign = Gtk.Align.START;
+    content.expand = true;
+    root.pack_end(content);
 
     var author = new Gtk.Label(null);
-    author.expand = true;
-    author.override_background_color(Gtk.StateFlags.NORMAL, {0,0,0,0});
-    author.halign = Gtk.Align.START;
+    author.hexpand = true;
+    author.halign = author.valign = Gtk.Align.START;
     author.margin = 12;
 
     var title = new Gtk.Label(null);
-    title.override_background_color(Gtk.StateFlags.NORMAL, {0,0,0,0});
-    title.expand = true;
-    title.halign = Gtk.Align.START;
+    title.hexpand = true;
+    title.halign = title.valign = Gtk.Align.START;
     title.margin = 12;
 
-    about_box.add(title);
-    about_box.add(author);
+    content.add(title);
+    content.add(author);
 
     button.button_press_event.connect(() => {
         YouData data = YouData.with_id(id_input.text);
