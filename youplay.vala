@@ -17,16 +17,8 @@ int main(string[] args) {
     toolbar.vexpand = false;
     toolbar.valign = Gtk.Align.START;
 
-    var toolbar_from_id = new Gtk.ToolButton(NULL, "Id");
+    var toolbar_from_id = new Gtk.ToolButton(null, "ID");
     toolbar.insert(toolbar_from_id, -1);
-
-/*    var id_input = new Gtk.Entry();
-    id_input.text = "Aed7TgSbCN0";
-    id_input.placeholder_text = "Enter id here...";
-    toolbar.pack_start(id_input, true, true, 0);
-
-    var button = new Gtk.Button.with_label("Go!");
-    toolbar.pack_end(button, true, true, 0); */
 
     root.pack_start(toolbar, false, false, 0);
 
@@ -50,28 +42,30 @@ int main(string[] args) {
     content.add(title);
     content.add(author);
 
-/*    button.button_press_event.connect(() => {
-        YouData data = YouData.with_id(id_input.text);
-        if(data.is_valid) {
-            title.set_markup("<big><b>" + data.title + "</b></big>");
-            author.set_text(data.author);
-        } else {
-            title.set_text("An error occured.");
-            author.set_text("");
-        }
-        return false;
-    }); */
     toolbar_from_id.button_press_event.connect(() => {
-        var dialog = Gtk.Dialog.with_buttons("Load Video", window, flags, "Yes", Gtk.Response.ACCEPT, "No", Gtk.Response.REJECT);
+        var dialog = new Gtk.Dialog.with_buttons("Load Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
+            "Done", Gtk.ResponseType.ACCEPT, 
+            "Cancel", Gtk.ResponseType.REJECT, null);
 
-        YouData data = YouData.with_id(id_input.text);
-        if(data.is_valid) {
-            title.set_markup("<big><b>" + data.title + "</b></big>");
-            author.set_text(data.author);
-        } else {
-            title.set_text("An error occured.");
-            author.set_text("");
-        }
+        var content_area = dialog.get_content_area();
+        var entry = new Gtk.Entry();
+        entry.show();
+        content_area.add(entry);
+
+        int result = dialog.run();
+        switch(result) {
+        case Gtk.ResponseType.ACCEPT:
+            YouData data = YouData.with_id(entry.text);
+            if(data.is_valid) {
+                title.set_markup("<big><b>" + data.title + "</b></big>");
+                author.set_text(data.author);
+            } else {
+                title.set_text("An error occured.");
+                author.set_text("");
+            }
+            break;
+        }            
+        dialog.close();
         return false;
     });
 
