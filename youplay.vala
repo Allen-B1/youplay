@@ -72,24 +72,31 @@ int main(string[] args) {
 
     // Load menu
     var load_menu = new Gtk.Menu();
-    var load_item = new Gtk.MenuItem.with_label("Load Video");
+    var load_item = new Gtk.MenuItem.with_label("Load");
+
+    // Load video menu
+    var load_video_menu = new Gtk.Menu();
+    var load_video_item = new Gtk.MenuItem.with_label("Video");
+    load_video_item.set_submenu(load_video_menu);
+    load_menu.append(load_video_item);
 
     var load_from_id = new Gtk.MenuItem.with_label("From ID");
     load_from_id.activate.connect(() => {
         load_video(title, author, window, false);
     });
-    load_menu.append(load_from_id);
+    load_video_menu.append(load_from_id);
 
     var load_from_url = new Gtk.MenuItem.with_label("From URL");
     load_from_url.activate.connect(() => {
         load_video(title, author, window, true);
     });
-    load_menu.append(load_from_url);
-
+    load_video_menu.append(load_from_url);
+    
     load_item.set_submenu(load_menu);
     menubar.append(load_item);
     
     root.pack_start(menubar, false, false, 0);
+
 
     // Toolbar
     var toolbar = new Gtk.Toolbar();
@@ -100,9 +107,14 @@ int main(string[] args) {
         ("document-open",
         Gtk.IconSize.LARGE_TOOLBAR),
         "URL");
+    toolbar_from_url.button_press_event.connect(() => {
+        load_video(title, author, window, true);
+        return false;
+    });
     toolbar.insert(toolbar_from_url, -1);
 
     root.pack_start(toolbar, false, false, 0);
+
 
     // Title and Author
     var content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
@@ -124,11 +136,6 @@ int main(string[] args) {
 
     content.add(title);
     content.add(author);
-
-    toolbar_from_url.button_press_event.connect(() => {
-        load_video(title, author, window, true);
-        return false;
-    });
 
     window.add(root);
 
