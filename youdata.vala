@@ -72,7 +72,7 @@ class YouVideo : YouData {
 
             this.title = obj.get_string_member("title");
             this.author = obj.get_string_member("author_name");
-            this.embed = "http://youtube.com/embed/" + id + "?rel=0";
+            this.embed = "http://youtube.com/embed/" + id + "?rel=0&fs=0";
         } catch(Error err) {
             this.title = ("URL or video ID is invalid: " + err.message);
             return;
