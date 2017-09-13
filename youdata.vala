@@ -55,7 +55,7 @@ struct YouData {
             data.author = obj.get_string_member("author_name");
             var html = obj.get_string_member("html");
             var html_start = html.index_of("src=") + 5;
-            data.embed = html[html_start:html.index_of("\"", html_start)];
+            data.embed = html[html_start:html.index_of("\"", html_start)] + "&rel=0";
         } catch(Error err) {
             return YouData("URL or video ID is invalid: " + err.message);
         }
