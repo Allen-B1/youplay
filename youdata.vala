@@ -1,3 +1,10 @@
+/**
+ * abstract class YouData:
+ *    represents data for a youtube video or playlist
+ * class YouVideo:
+ *    represents a youtube video
+ */
+
 abstract class YouData {
     public string title;
     public string author;
