@@ -52,7 +52,7 @@ int main(string[] args) {
     var window = new Gtk.Window();
     window.title = "YouPlay";
     window.set_position(Gtk.WindowPosition.CENTER);
-    window.set_default_size(950, 750);
+    window.set_default_size(850, 750);
     window.destroy.connect(Gtk.main_quit);
 
     var root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
@@ -129,7 +129,7 @@ int main(string[] args) {
     video_view = new WebKit.WebView();
     video_view.hexpand = true;
     video_view.halign = video_view.valign = Gtk.Align.START;
-    video_view.set_size_request(950, 950 * 9 / 16);
+    video_view.set_size_request(850, 850 * 9 / 16);
 
     author = new Gtk.Label(null);
     author.hexpand = true;
