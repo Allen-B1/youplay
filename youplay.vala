@@ -75,7 +75,7 @@ int main(string[] args) {
 
     // Load menu
     var load_menu = new Gtk.Menu();
-    var load_item = new Gtk.MenuItem.with_label("Load");
+    var load_item = new Gtk.MenuItem.with_label("Open");
 
     // Load video menu
     var load_video_menu = new Gtk.Menu();
