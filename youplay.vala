@@ -1,7 +1,7 @@
 /* YouPlay
  */
 
-void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, bool is_url) {
+void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.WebView video_view, bool is_url) {
     var dialog = new Gtk.Dialog.with_buttons("Load Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
         "Done", Gtk.ResponseType.ACCEPT, 
         "Cancel", Gtk.ResponseType.REJECT, null);
@@ -24,6 +24,8 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, bool is_ur
             data = YouData.with_id(entry.text);
         dialog.destroy();
         if(data.is_valid) {
+            stdout.puts(data.embed + "\n");
+            video_view.load_uri(data.embed);
             title.set_markup("<big><b>" + data.title + "</b></big>");
             author.set_text(data.author);
         } else {
@@ -56,6 +58,7 @@ int main(string[] args) {
     var root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
     Gtk.Label title = null;
     Gtk.Label author = null;
+    WebKit.WebView video_view = null;
 
     var menubar = new Gtk.MenuBar();
     var file_menu = new Gtk.Menu();
@@ -82,13 +85,13 @@ int main(string[] args) {
 
     var load_from_id = new Gtk.MenuItem.with_label("From ID");
     load_from_id.activate.connect(() => {
-        load_video(title, author, window, false);
+        load_video(title, author, window, video_view, false);
     });
     load_video_menu.append(load_from_id);
 
     var load_from_url = new Gtk.MenuItem.with_label("From URL");
     load_from_url.activate.connect(() => {
-        load_video(title, author, window, true);
+        load_video(title, author, window, video_view, true);
     });
     load_video_menu.append(load_from_url);
     
@@ -108,7 +111,7 @@ int main(string[] args) {
         Gtk.IconSize.LARGE_TOOLBAR),
         "URL");
     toolbar_from_url.button_press_event.connect(() => {
-        load_video(title, author, window, true);
+        load_video(title, author, window, video_view, true);
         return false;
     });
     toolbar.insert(toolbar_from_url, -1);
@@ -123,6 +126,16 @@ int main(string[] args) {
     content.vexpand = false;
     root.pack_start(content, false, false, 0);
 
+    video_view = new WebKit.WebView();
+    video_view.hexpand = true;
+    video_view.halign = video_view.valign = Gtk.Align.START;
+    video_view.set_size_request(950, 950 * 16 / 9);
+    window.size_allocate.connect(() => {
+        int w = 0, h = 0;
+        window.get_size(out w, out h);
+        video_view.set_size_request(w, w * 16 / 9);
+    });
+
     author = new Gtk.Label(null);
     author.hexpand = true;
     author.halign = author.valign = Gtk.Align.START;
@@ -134,6 +147,7 @@ int main(string[] args) {
     title.halign = title.valign = Gtk.Align.START;
     title.margin = 12;
 
+    content.add(video_view);
     content.add(title);
     content.add(author);
 

@@ -51,11 +51,13 @@ struct YouData {
                 return YouData("URL or video ID is invalid");
             }
 
-            data.title = obj.get_member("title").get_string();
-            data.author = obj.get_member("author_name").get_string();
+            data.title = obj.get_string_member("title");
+            data.author = obj.get_string_member("author_name");
+            var html = obj.get_string_member("html");
+            var html_start = html.index_of("src=") + 5;
+            data.embed = html[html_start:html.index_of("\"", html_start)];
         } catch(Error err) {
-            stdout.printf("Error: %s\n", err.message);
-            return YouData();
+            return YouData("URL or video ID is invalid: " + err.message);
         }
         return data;
     }
