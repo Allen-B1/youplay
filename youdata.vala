@@ -1,31 +1,42 @@
-struct YouData {
+abstract class YouData {
     public string title;
     public string author;
     public string embed;
-    public string? url; // if null, video doesn't exist
+    public string? id; // if null, video doesn't exist
 
-    public YouData(string title="", string author="", string embed="", string? url=null) {
+    public bool is_valid { get {
+        return this.id != null;
+    }}
+
+    public string? error { get {
+        if(!this.is_valid)
+            return this.title;
+        else
+            return null;
+    }}
+}
+
+class YouVideo : YouData {
+    public YouVideo(string title="", string author="", string embed="", string? id=null) {
         this.title = title;
         this.author = author;
         this.embed = embed;
-        this.url = url;
+        this.id = id;
     }
 
-    public static YouData with_id(string id) {
-        return YouData.with_url("http://youtu.be/" + id);
-    }
+    public YouVideo.with_id(string id) {
+        this.id = id;
 
-    public static YouData with_url(string url) {
-        var data = YouData();
-        data.url = url;
+        stdout.puts("https://youtu.be/" + id);
+        stdout.flush();
 
-
-        File f = File.new_for_uri("https://noembed.com/embed?url=" + url);
+        File f = File.new_for_uri("https://noembed.com/embed?url=https://youtu.be/" + id);
         DataInputStream data_stream = null;
         try {
             data_stream = new DataInputStream(f.read());
         } catch(Error err) {
-            return YouData(err.message);
+            this.title = "Error: " + err.message;
+            return;
         }
 
         var text = new StringBuilder();
@@ -36,8 +47,8 @@ struct YouData {
                 text.append_c('\n');
             }
         } catch(GLib.IOError err) {
-            stdout.printf("Error: %s\n", err.message);
-            return YouData();
+            this.title = "Error: " + err.message;
+            return;
         }
 
         var json_parser = new Json.Parser();
@@ -48,28 +59,37 @@ struct YouData {
             unowned Json.Object obj = root.get_object();       
 
             if(obj.has_member("error")) {
-                return YouData("URL or video ID is invalid");
+                this.title = ("URL or video ID is invalid");
+                return;
             }
 
-            data.title = obj.get_string_member("title");
-            data.author = obj.get_string_member("author_name");
-            var html = obj.get_string_member("html");
-            var html_start = html.index_of("src=") + 5;
-            data.embed = html[html_start:html.index_of("\"", html_start)] + "&rel=0";
+            this.title = obj.get_string_member("title");
+            this.author = obj.get_string_member("author_name");
+            this.embed = "http://youtube.com/embed/" + id + "?rel=0";
         } catch(Error err) {
-            return YouData("URL or video ID is invalid: " + err.message);
+            this.title = ("URL or video ID is invalid: " + err.message);
+            return;
         }
-        return data;
+        return;
     }
 
-    public bool is_valid { get {
-        return this.url != null;
-    }}
-
-    public string? error { get {
-        if(!this.is_valid)
-            return this.title;
+    public YouVideo.with_url(string url) {
+        var startIndex = 0;
+        var endIndex = 0;
+        if(url.index_of("youtu.be") != -1) {
+            startIndex = url.index_of("be/") + 3;
+            endIndex = 0;
+        } else {
+            startIndex = url.index_of("v=") + 2;
+            endIndex = url.index_of("&", startIndex + 1) + 1;
+        }
+        string id;
+        if(endIndex == 0 || endIndex == -1)
+            id = url[startIndex:url.length];
         else
-            return null;
-    }}
+            id = url[startIndex:endIndex];
+        this.with_id(id);
+    }
+
+    
 }

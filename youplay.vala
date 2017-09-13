@@ -19,9 +19,9 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.Web
     case Gtk.ResponseType.ACCEPT:
         YouData data;
         if(is_url)
-            data = YouData.with_url(entry.text);
+            data = new YouVideo.with_url(entry.text);
         else
-            data = YouData.with_id(entry.text);
+            data = new YouVideo.with_id(entry.text);
         dialog.destroy();
         if(data.is_valid) {
             stdout.puts(data.embed + "\n");
@@ -129,7 +129,7 @@ int main(string[] args) {
     video_view = new WebKit.WebView();
     video_view.hexpand = true;
     video_view.halign = video_view.valign = Gtk.Align.START;
-    video_view.set_size_request(950, 950 * 16 / 9);
+    video_view.set_size_request(950, 950 * 9 / 16);
 
     author = new Gtk.Label(null);
     author.hexpand = true;
