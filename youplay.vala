@@ -130,11 +130,6 @@ int main(string[] args) {
     video_view.hexpand = true;
     video_view.halign = video_view.valign = Gtk.Align.START;
     video_view.set_size_request(950, 950 * 16 / 9);
-    window.size_allocate.connect(() => {
-        int w = 0, h = 0;
-        window.get_size(out w, out h);
-        video_view.set_size_request(w, w * 16 / 9);
-    });
 
     author = new Gtk.Label(null);
     author.hexpand = true;
