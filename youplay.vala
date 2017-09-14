@@ -17,7 +17,7 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.Web
     int result = dialog.run();
     switch(result) {
     case Gtk.ResponseType.ACCEPT:
-        YouData data;
+        YouVideo data;
         if(is_url)
             data = new YouVideo.with_url(entry.text);
         else

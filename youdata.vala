@@ -3,11 +3,12 @@
  *    represents data for a youtube video or playlist
  * class YouVideo:
  *    represents a youtube video
+ * class YouPlayList:
+ *    represents a youtube playlist
  */
 
 abstract class YouData {
     public string title;
-    public string author;
     public string embed;
     public string? id; // if null, video doesn't exist
 
@@ -24,11 +25,13 @@ abstract class YouData {
 }
 
 class YouVideo : YouData {
-    public YouVideo(string title="", string author="", string embed="", string? id=null) {
-        this.title = title;
-        this.author = author;
-        this.embed = embed;
-        this.id = id;
+    public string author;
+
+    public YouVideo() {
+        this.title = "";
+        this.author = "";
+        this.embed = "";
+        this.id = null;
     }
 
     public YouVideo.with_id(string id) {
@@ -96,7 +99,43 @@ class YouVideo : YouData {
         else
             id = url[startIndex:endIndex];
         this.with_id(id);
-    }
+    }   
+}
 
-    
+class YouPlayList: YouData {
+    public YouPlayList() {
+        this.embed = "";
+        this.title = "";
+        this.id = null;
+    }
+    public YouPlayList.with_id(string id) {
+        this.embed = "http://youtube.com/embed?listType=playlist&list=" + id + "&rel=0&fs=0";
+        var f = File.new_for_uri(this.embed);
+        DataInputStream data_stream = null;
+        try {
+            data_stream = new DataInputStream(f.read());
+        } catch(Error err) {
+            this.title = "Error: " + err.message;
+            return;
+        }
+
+        var text = new StringBuilder();
+        string line;
+        try {
+            while((line = data_stream.read_line()) != null) {
+                text.append(line);
+                text.append_c('\n');
+            }
+        } catch(GLib.IOError err) {
+            this.title = "Error: " + err.message;
+            return;
+        }
+
+        this.id = id;
+        
+        var titleStart = text.str.index_of("<title>") + 7;
+        var titleEnd = text.str.index_of("</", titleStart);
+
+        this.title = text.str[titleStart:titleEnd];
+    }
 }
