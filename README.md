@@ -16,8 +16,5 @@ And to run:
 ./youplay
 ```
 ## Features
-* Video Playing
-* Simple User Interface
-
-### Future
-* Playlist Playing
+* Watch videos
+* Watch playlist
