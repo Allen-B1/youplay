@@ -45,6 +45,46 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.Web
     }
 }
 
+void load_playlist(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.WebView video_view, bool is_url) {
+    var dialog = new Gtk.Dialog.with_buttons("Load Playlist", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
+        "Done", Gtk.ResponseType.ACCEPT, 
+        "Cancel", Gtk.ResponseType.REJECT, null);
+
+    var content_area = dialog.get_content_area();
+    content_area.add(new Gtk.Label("Enter playlist " + (is_url ? "URL" : "ID")));
+
+    var entry = new Gtk.Entry();
+    entry.margin = 4;
+    content_area.add(entry);
+    content_area.show_all();
+
+    int result = dialog.run();
+    switch(result) {
+    case Gtk.ResponseType.ACCEPT:
+        var data = new YouPlayList.with_id(entry.text);
+        dialog.destroy();
+        if(data.is_valid) {
+            stdout.puts(data.embed + "\n");
+            video_view.load_uri(data.embed);
+            title.set_markup("<big><b>" + data.title + "</b></big>");
+            author.set_text("Unknown");
+        } else {
+            var error_msg = new Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                Gtk.MessageType.ERROR,
+                Gtk.ButtonsType.CLOSE,
+                "%s",
+                data.error);
+
+            error_msg.run();
+            error_msg.close();
+        }
+        break;
+    default:
+        dialog.destroy();
+        break;
+    }
+}
+
 int main(string[] args) {
     Gtk.init(ref args);
     
@@ -73,9 +113,11 @@ int main(string[] args) {
     file_menu.append(quit_item);
     menubar.append(file_item);
 
+
     // Load menu
     var load_menu = new Gtk.Menu();
     var load_item = new Gtk.MenuItem.with_label("Open");
+
 
     // Load video menu
     var load_video_menu = new Gtk.Menu();
@@ -94,6 +136,20 @@ int main(string[] args) {
         load_video(title, author, window, video_view, true);
     });
     load_video_menu.append(load_from_url);
+
+
+    // Playlist menu
+    var load_playlist_item = new Gtk.MenuItem.with_label("Playlist");
+    var load_playlist_menu = new Gtk.Menu();
+    load_playlist_item.set_submenu(load_playlist_menu);
+    load_menu.append(load_playlist_item);
+
+    var load_list_from_id = new Gtk.MenuItem.with_label("From ID");
+    load_list_from_id.activate.connect(() => {
+        load_playlist(title, author, window, video_view, false);
+    });
+    load_playlist_menu.append(load_list_from_id);
+
     
     load_item.set_submenu(load_menu);
     menubar.append(load_item);
