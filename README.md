@@ -15,3 +15,9 @@ And to run:
 ```bash
 ./youplay
 ```
+## Features
+* Video Playing
+* Simple User Interface
+
+### Future
+* Playlist Playing
