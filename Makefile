@@ -10,3 +10,7 @@ dependecies:
 build:
 	valac youplay.vala youdata.vala --pkg gtk+-3.0 --pkg json-glib-1.0 --pkg webkit2gtk-4.0
 
+install:
+	mkdir ~/YouPlay || true
+	cp ./youplay ~/YouPlay/youplay
+	cp ./youplay.desktop ~/.local/share/applications/
