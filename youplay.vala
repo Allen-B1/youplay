@@ -227,9 +227,9 @@ int main(string[] args) {
                 var dialog = new Gtk.MessageDialog.with_markup(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
                 Gtk.MessageType.INFO,
                 Gtk.ButtonsType.CLOSE,
-                "<big><b>%s</b></big>\n%s",
-                "Share Video",
+                "%s",
                 "https://youtu.be/" + current_video.id);
+                dialog.title = "Share";                
                 dialog.run();
                 dialog.destroy();
             }
