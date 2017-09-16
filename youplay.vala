@@ -228,16 +228,20 @@ int main(string[] args) {
             "Share");
         toolbar_share.clicked.connect(() => {
             if(current_video != null) {
+                string url = "";
                 if(current_video is YouVideo) {
-                    var dialog = new Gtk.MessageDialog.with_markup(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                    url = "https://youtu.be/" + current_video.id;
+                } else { // is YouPlayList
+                    url = "https://youtube.com/playlist?list=" + current_video.id;
+                }
+                var dialog = new Gtk.MessageDialog.with_markup(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
                     Gtk.MessageType.INFO,
                     Gtk.ButtonsType.CLOSE,
                     "%s",
-                    "https://youtu.be/" + current_video.id);
-                    dialog.title = "Share";                
-                    dialog.run();
-                    dialog.destroy();
-                }
+                    url);
+                dialog.title = "Share";                
+                dialog.run();
+                dialog.destroy();
             }
         });
         toolbar.insert(toolbar_share, -1);
