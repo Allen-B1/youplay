@@ -10,13 +10,6 @@ Gtk.Box content = null;
 Gtk.Box start_screen = null;
 YouData current_video = null;
 
-// Open video screen, close other screens
-void open_content() {
-    root.pack_start(content, false, false, 0);
-    content.show_all();
-    start_screen.destroy();
-}
-
 void load_video(bool is_url) {
     var dialog = new Gtk.Dialog.with_buttons("Open Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
         "Done", Gtk.ResponseType.ACCEPT, 
@@ -41,7 +34,6 @@ void load_video(bool is_url) {
         dialog.destroy();
 
         if(data.is_valid) {
-            open_content();
             current_video = data as YouData;
 
             stdout.puts(data.embed + "\n");
@@ -85,7 +77,6 @@ void load_playlist(bool is_url) {
         dialog.destroy();
 
         if(data.is_valid) {
-            open_content();
             current_video = data as YouData;
 
             stdout.puts(data.embed + "\n");
@@ -128,22 +119,26 @@ int main(string[] args) {
     var toolbar = YouTop.create_toolbar(load_video, load_playlist);
     root.pack_start(toolbar, false, false, 0);
 
+    var notebook = new Gtk.Notebook();
+    root.pack_start(notebook, true, true, 0);
 
     // Start screen
     start_screen = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
     var welcome_title = new Gtk.Label(null);
     welcome_title.set_markup("<big><b>Welcome!</b></big>");
+    welcome_title.yalign = 1;
     var welcome_text = new Gtk.Label("Welcome to YouPlay! Open up a video to start.");
+    welcome_text.yalign = 0;
     start_screen.pack_start(welcome_title, true, true, 0);
     start_screen.pack_start(welcome_text, true, true, 0);
-    root.pack_start(start_screen, true, false, 0);
-
+    notebook.append_page(start_screen, new Gtk.Label("Welcome"));
 
     // Actual video viewing thing
     content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
     content.valign = Gtk.Align.START;
     content.hexpand = true;
     content.vexpand = false;
+    notebook.append_page(content, new Gtk.Label("Video"));
 
     video_view = new WebKit.WebView();
     video_view.hexpand = true;
@@ -152,7 +147,7 @@ int main(string[] args) {
     Gdk.threads_add_idle(() => {
         int w, h;
         window.get_size(out w, out h);
-        video_view.set_size_request((int)((double)w * 0.85), 500);
+        video_view.set_size_request(w - 160, 500);
         return true;
     });
 
