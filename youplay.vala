@@ -218,7 +218,7 @@ int main(string[] args) {
     start_screen = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
     var welcome_title = new Gtk.Label(null);
     welcome_title.set_markup("<big><b>Welcome!</b></big>");
-    var welcome_text = new Gtk.Label("Welcome to YouPlay! Open up a video to start!");
+    var welcome_text = new Gtk.Label("Welcome to YouPlay! Open up a video to start.");
     start_screen.pack_start(welcome_title, true, true, 0);
     start_screen.pack_start(welcome_text, true, true, 0);
     root.pack_start(start_screen, true, false, 0);
