@@ -1,7 +1,22 @@
 /* YouPlay
  */
 
-void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.WebView video_view, bool is_url) {
+Gtk.Label title = null;
+Gtk.Label author = null;
+WebKit.WebView video_view = null;
+Gtk.Window window = null;
+Gtk.Box root = null;
+Gtk.Box content = null;
+Gtk.Box start_screen = null;
+
+// Open video screen, close other screens
+void open_content() {
+    root.pack_start(content, false, false, 0);
+    content.show_all();
+    start_screen.destroy();
+}
+
+void load_video(bool is_url) {
     var dialog = new Gtk.Dialog.with_buttons("Open Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
         "Done", Gtk.ResponseType.ACCEPT, 
         "Cancel", Gtk.ResponseType.REJECT, null);
@@ -24,6 +39,7 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.Web
             data = new YouVideo.with_id(entry.text);
         dialog.destroy();
         if(data.is_valid) {
+            open_content();
             stdout.puts(data.embed + "\n");
             video_view.load_uri(data.embed);
             title.set_markup("<big><b>" + data.title + "</b></big>");
@@ -45,7 +61,7 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.Web
     }
 }
 
-void load_playlist(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.WebView video_view, bool is_url) {
+void load_playlist(bool is_url) {
     var dialog = new Gtk.Dialog.with_buttons("Open Playlist", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
         "Done", Gtk.ResponseType.ACCEPT, 
         "Cancel", Gtk.ResponseType.REJECT, null);
@@ -64,6 +80,8 @@ void load_playlist(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.
         var data = new YouPlayList.with_id(entry.text);
         dialog.destroy();
         if(data.is_valid) {
+            open_content();
+
             stdout.puts(data.embed + "\n");
             video_view.load_uri(data.embed);
             title.set_markup("<big><b>" + data.title + "</b></big>");
@@ -89,17 +107,16 @@ int main(string[] args) {
     Gtk.init(ref args);
     
     // Initialize Window
-    var window = new Gtk.Window();
+    window = new Gtk.Window();
     window.title = "YouPlay";
     window.set_position(Gtk.WindowPosition.CENTER);
     window.set_default_size(750, 450);
     window.destroy.connect(Gtk.main_quit);
 
-    var root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-    Gtk.Label title = null;
-    Gtk.Label author = null;
-    WebKit.WebView video_view = null;
+    root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
+
+    // Menubar
     var menubar = new Gtk.MenuBar();
     var file_menu = new Gtk.Menu();
     var file_item = new Gtk.MenuItem.with_label("File");
@@ -140,13 +157,13 @@ int main(string[] args) {
 
     var load_from_url = new Gtk.MenuItem.with_label("From URL");
     load_from_url.activate.connect(() => {
-        load_video(title, author, window, video_view, true);
+        load_video(true);
     });
     load_video_menu.append(load_from_url);
 
     var load_from_id = new Gtk.MenuItem.with_label("From ID");
     load_from_id.activate.connect(() => {
-        load_video(title, author, window, video_view, false);
+        load_video(false);
     });
     load_video_menu.append(load_from_id);
 
@@ -159,7 +176,7 @@ int main(string[] args) {
 
     var load_list_from_id = new Gtk.MenuItem.with_label("From ID");
     load_list_from_id.activate.connect(() => {
-        load_playlist(title, author, window, video_view, false);
+        load_playlist(false);
     });
     load_playlist_menu.append(load_list_from_id);
 
@@ -167,6 +184,7 @@ int main(string[] args) {
     load_item.set_submenu(load_menu);
     menubar.append(load_item);
     root.pack_start(menubar, false, false, 0);
+
 
 
     // Toolbar
@@ -179,7 +197,7 @@ int main(string[] args) {
         Gtk.IconSize.LARGE_TOOLBAR),
         "URL");
     toolbar_video.clicked.connect(() => {
-        load_video(title, author, window, video_view, true);
+        load_video(true);
     });
     toolbar.insert(toolbar_video, -1);
 
@@ -188,34 +206,43 @@ int main(string[] args) {
         Gtk.IconSize.LARGE_TOOLBAR),
         "URL");
     toolbar_playlist.clicked.connect(() => {
-        load_playlist(title, author, window, video_view, false);
+        load_playlist(false);
     });
     toolbar.insert(toolbar_playlist, -1);
 
     root.pack_start(toolbar, false, false, 0);
 
 
-    // Title and Author
-    var content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+
+    // Start screen
+    start_screen = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+    var welcome_title = new Gtk.Label(null);
+    welcome_title.set_markup("<big><b>Welcome!</b></big>");
+    var welcome_text = new Gtk.Label("Welcome to YouPlay! Open up a video to start!");
+    start_screen.pack_start(welcome_title, true, true, 0);
+    start_screen.pack_start(welcome_text, true, true, 0);
+    root.pack_start(start_screen, true, false, 0);
+
+
+    // Actual video viewing thing
+    content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
     content.valign = Gtk.Align.START;
     content.hexpand = true;
     content.vexpand = false;
-    root.pack_start(content, false, false, 0);
 
     video_view = new WebKit.WebView();
     video_view.hexpand = true;
     video_view.halign = video_view.valign = Gtk.Align.START;
     video_view.set_size_request(750, 750 * 9 / 16);
-    video_view.load_uri("https://raw.githubusercontent.com/Allen-B1/youplay/master/icon.png");
 
-    author = new Gtk.Label("Welcome to YouPlay! Get started by opening a video.");
+    author = new Gtk.Label("Unknown");
     author.hexpand = true;
     author.halign = author.valign = Gtk.Align.START;
     author.margin = 12;
     author.margin_top = 0;
 
     title = new Gtk.Label(null);
-    title.set_markup("<big><b>Welcome!</b></big>");
+    title.set_markup("<big><b>N/A</b></big>");
     title.hexpand = true;
     title.halign = title.valign = Gtk.Align.START;
     title.margin = 12;
