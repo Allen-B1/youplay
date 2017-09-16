@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=YouPlay
 Exec=bash -c "~/YouPlay/youplay" dummy %k
-Icon=application-default-icon
+Icon=/home/username/YouPlay/icon.png
 Categories=Network;
 Type=Application
