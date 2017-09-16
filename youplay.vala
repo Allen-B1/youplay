@@ -193,7 +193,7 @@ int main(string[] args) {
 
     // Open video from url
     var toolbar_video = new Gtk.ToolButton(new Gtk.Image.from_icon_name
-        ("list-add",
+        ("document-open",
         Gtk.IconSize.LARGE_TOOLBAR),
         "URL");
     toolbar_video.clicked.connect(() => {
