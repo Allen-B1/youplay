@@ -1,5 +1,4 @@
 all: dependecies build install
-
 dependecies:
 	dpkg -l libwebkit2gtk-4.0-dev || sudo apt install libwebkit2gtk-4.0-dev
 	dpkg -l libgtk-3-dev || sudo apt install libgtk-3-dev
@@ -15,5 +14,4 @@ install:
 	rm ~/YouPlay/youplay || true
 	cp ./youplay ~/YouPlay/youplay
 	cp ./icon.png ~/YouPlay/icon.png
-	youplay_username=$(USERNAME)
-	sed -e "s/username/$(USERNAME)/g" youplay.desktop > ~/.local/share/applications/youplay.desktop
+	sed -e "s/username/$(NAME)/g" youplay.desktop > ~/.local/share/applications/youplay.desktop
