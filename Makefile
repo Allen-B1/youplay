@@ -4,7 +4,7 @@ dependecies:
 	dpkg -l libwebkit2gtk-4.0-dev || apt install libwebkit2gtk-4.0-dev
 	dpkg -l libgtk-3-dev || apt install libgtk-3-dev
 	dpkg -l valac || apt install valac
-	dpkg -l glib-2.0 || apt install glib-2.0
+	dpkg -l glib-* || apt install glib-2.0
 	dpkg -l libjson-glib-dev || apt install libjson-glib-dev
 
 build:
