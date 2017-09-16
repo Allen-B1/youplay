@@ -8,6 +8,7 @@ Gtk.Window window = null;
 Gtk.Box root = null;
 Gtk.Box content = null;
 Gtk.Box start_screen = null;
+YouData current_video = null;
 
 // Open video screen, close other screens
 void open_content() {
@@ -38,8 +39,11 @@ void load_video(bool is_url) {
         else
             data = new YouVideo.with_id(entry.text);
         dialog.destroy();
+
         if(data.is_valid) {
             open_content();
+            current_video = data as YouData;
+
             stdout.puts(data.embed + "\n");
             video_view.load_uri(data.embed);
             title.set_markup("<big><b>" + data.title + "</b></big>");
@@ -79,8 +83,10 @@ void load_playlist(bool is_url) {
     case Gtk.ResponseType.ACCEPT:
         var data = new YouPlayList.with_id(entry.text);
         dialog.destroy();
+
         if(data.is_valid) {
             open_content();
+            current_video = data as YouData;
 
             stdout.puts(data.embed + "\n");
             video_view.load_uri(data.embed);
@@ -129,6 +135,7 @@ int main(string[] args) {
             "<big><b>%s</b></big>\n%s",
             "About YouPlay",
             "YouPlay is a minimalistic YouTube player.");
+        dialog.title = "About";
         dialog.run();
         dialog.destroy();
     });
@@ -195,7 +202,7 @@ int main(string[] args) {
     var toolbar_video = new Gtk.ToolButton(new Gtk.Image.from_icon_name
         ("document-open",
         Gtk.IconSize.LARGE_TOOLBAR),
-        "URL");
+        "Video");
     toolbar_video.clicked.connect(() => {
         load_video(true);
     });
@@ -204,11 +211,31 @@ int main(string[] args) {
     var toolbar_playlist = new Gtk.ToolButton(new Gtk.Image.from_icon_name
         ("insert-object",
         Gtk.IconSize.LARGE_TOOLBAR),
-        "URL");
+        "Playlist");
     toolbar_playlist.clicked.connect(() => {
         load_playlist(false);
     });
     toolbar.insert(toolbar_playlist, -1);
+
+    var toolbar_share = new Gtk.ToolButton(new Gtk.Image.from_icon_name
+        ("emblem-shared",
+        Gtk.IconSize.LARGE_TOOLBAR),
+        "Share");
+    toolbar_share.clicked.connect(() => {
+        if(current_video != null) {
+            if(current_video is YouVideo) {
+                var dialog = new Gtk.MessageDialog.with_markup(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                Gtk.MessageType.INFO,
+                Gtk.ButtonsType.CLOSE,
+                "<big><b>%s</b></big>\n%s",
+                "Share Video",
+                "https://youtu.be/" + current_video.id);
+                dialog.run();
+                dialog.destroy();
+            }
+        }
+    });
+    toolbar.insert(toolbar_share, -1);
 
     root.pack_start(toolbar, false, false, 0);
 
