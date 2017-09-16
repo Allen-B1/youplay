@@ -65,6 +65,13 @@ void load_video(bool is_url) {
     }
 }
 
+bool resize_video_view() {
+    int w, h;
+    window.get_size(out w, out h);
+    video_view.set_size_request((int)((double)w * 0.85), 500);
+    return true;
+}
+
 void load_playlist(bool is_url) {
     var dialog = new Gtk.Dialog.with_buttons("Open Playlist", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
         "Done", Gtk.ResponseType.ACCEPT, 
@@ -270,6 +277,7 @@ int main(string[] args) {
     video_view.hexpand = true;
     video_view.halign = video_view.valign = Gtk.Align.START;
     video_view.set_size_request(750, 750 * 9 / 16);
+    Gdk.threads_add_idle(resize_video_view);
 
     author = new Gtk.Label("Unknown");
     author.hexpand = true;
