@@ -1,3 +1,5 @@
+NAME=`whoami`
+
 all: dependecies build install
 
 dependecies:
