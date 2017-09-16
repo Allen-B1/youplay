@@ -125,17 +125,17 @@ int main(string[] args) {
     load_video_item.set_submenu(load_video_menu);
     load_menu.append(load_video_item);
 
-    var load_from_id = new Gtk.MenuItem.with_label("From ID");
-    load_from_id.activate.connect(() => {
-        load_video(title, author, window, video_view, false);
-    });
-    load_video_menu.append(load_from_id);
-
     var load_from_url = new Gtk.MenuItem.with_label("From URL");
     load_from_url.activate.connect(() => {
         load_video(title, author, window, video_view, true);
     });
     load_video_menu.append(load_from_url);
+
+    var load_from_id = new Gtk.MenuItem.with_label("From ID");
+    load_from_id.activate.connect(() => {
+        load_video(title, author, window, video_view, false);
+    });
+    load_video_menu.append(load_from_id);
 
 
     // Playlist menu
