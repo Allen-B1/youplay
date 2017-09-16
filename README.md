@@ -1,5 +1,6 @@
 # youplay
-Minimalistic youtube player - still in development
+A minimalistic youtube player - for linux  
+still in development
 
 ![Screenshot](YouPlay-6.png)
 
