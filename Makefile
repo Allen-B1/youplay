@@ -1,4 +1,5 @@
 all: dependecies build install
+
 dependecies:
 	dpkg -l libwebkit2gtk-4.0-dev || sudo apt install libwebkit2gtk-4.0-dev
 	dpkg -l libgtk-3-dev || sudo apt install libgtk-3-dev
