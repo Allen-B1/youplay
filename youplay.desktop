@@ -2,5 +2,5 @@
 Name=YouPlay
 Exec=bash -c "~/YouPlay/youplay" dummy %k
 Icon=/home/username/YouPlay/icon.png
-Categories=Network;
+Categories=AudioVideo;Video;Player;TV;
 Type=Application

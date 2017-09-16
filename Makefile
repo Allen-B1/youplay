@@ -1,4 +1,4 @@
-all: dependecies build
+all: dependecies build install
 
 dependecies:
 	dpkg -l libwebkit2gtk-4.0-dev || apt install libwebkit2gtk-4.0-dev
