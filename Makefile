@@ -12,7 +12,7 @@ build:
 
 install:
 	mkdir ~/YouPlay || true
-	rm ~/YouPlay/youplay
+	rm ~/YouPlay/youplay || true
 	cp ./youplay ~/YouPlay/youplay
 	cp ./icon.png ~/YouPlay/icon.png
 	youplay_username=$(USERNAME)
