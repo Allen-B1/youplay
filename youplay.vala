@@ -153,7 +153,6 @@ int main(string[] args) {
     
     load_item.set_submenu(load_menu);
     menubar.append(load_item);
-    
     root.pack_start(menubar, false, false, 0);
 
 
@@ -162,14 +161,23 @@ int main(string[] args) {
     toolbar.valign = Gtk.Align.START;
 
     // Open video from url
-    var toolbar_from_url = new Gtk.ToolButton(new Gtk.Image.from_icon_name
-        ("document-open",
+    var toolbar_video = new Gtk.ToolButton(new Gtk.Image.from_icon_name
+        ("media-playback-start",
         Gtk.IconSize.LARGE_TOOLBAR),
         "URL");
-    toolbar_from_url.clicked.connect(() => {
+    toolbar_video.clicked.connect(() => {
         load_video(title, author, window, video_view, true);
     });
-    toolbar.insert(toolbar_from_url, -1);
+    toolbar.insert(toolbar_video, -1);
+
+    var toolbar_playlist = new Gtk.ToolButton(new Gtk.Image.from_icon_name
+        ("list-add",
+        Gtk.IconSize.LARGE_TOOLBAR),
+        "URL");
+    toolbar_playlist.clicked.connect(() => {
+        load_playlist(title, author, window, video_view, false);
+    });
+    toolbar.insert(toolbar_playlist, -1);
 
     root.pack_start(toolbar, false, false, 0);
 
