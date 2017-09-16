@@ -12,8 +12,8 @@ build:
 
 install:
 	mkdir ~/YouPlay || true
+	rm ~/YouPlay/youplay
 	cp ./youplay ~/YouPlay/youplay
 	cp ./icon.png ~/YouPlay/icon.png
-	youplay_desktop=`cat ./youplay.desktop`
 	youplay_username=$(USERNAME)
 	sed -e "s/username/$(USERNAME)/g" youplay.desktop > ~/.local/share/applications/youplay.desktop
