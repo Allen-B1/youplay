@@ -218,7 +218,9 @@ int main(string[] args) {
         });
         toolbar.insert(toolbar_playlist, -1);
 
-        toolbar.insert(new Gtk.SeparatorToolItem(), -1);
+        var separator = new Gtk.SeparatorToolItem();
+        separator.draw = true;
+        toolbar.insert(separator, -1);
 
         var toolbar_share = new Gtk.ToolButton(new Gtk.Image.from_icon_name
             ("emblem-shared",
