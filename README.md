@@ -1,7 +1,7 @@
 # youplay
 Minimalistic youtube player - still in development
 
-![Screenshot](YouPlay-3.png)
+![Screenshot](YouPlay-4.png)
 
 ## Install
 ```bash
