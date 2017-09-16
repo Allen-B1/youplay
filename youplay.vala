@@ -166,9 +166,8 @@ int main(string[] args) {
         ("document-open",
         Gtk.IconSize.LARGE_TOOLBAR),
         "URL");
-    toolbar_from_url.button_press_event.connect(() => {
+    toolbar_from_url.clicked.connect(() => {
         load_video(title, author, window, video_view, true);
-        return false;
     });
     toolbar.insert(toolbar_from_url, -1);
 
