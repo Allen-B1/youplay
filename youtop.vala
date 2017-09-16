@@ -72,4 +72,56 @@ namespace YouTop {
         menubar.append(load_item);
         return menubar;
     }
+
+    Gtk.Toolbar create_toolbar(LoadFunc load_video, LoadFunc load_playlist) {// Toolbar
+        var toolbar = new Gtk.Toolbar();
+        toolbar.valign = Gtk.Align.START;
+
+        // Open video from url
+        var toolbar_video = new Gtk.ToolButton(new Gtk.Image.from_icon_name
+            ("document-open",
+            Gtk.IconSize.LARGE_TOOLBAR),
+            "Video");
+        toolbar_video.clicked.connect(() => {
+            load_video(true);
+        });
+        toolbar.insert(toolbar_video, -1);
+
+        var toolbar_playlist = new Gtk.ToolButton(new Gtk.Image.from_icon_name
+            ("insert-object",
+            Gtk.IconSize.LARGE_TOOLBAR),
+            "Playlist");
+        toolbar_playlist.clicked.connect(() => {
+            load_playlist(false);
+        });
+        toolbar.insert(toolbar_playlist, -1);
+
+        var separator = new Gtk.SeparatorToolItem();
+        separator.draw = true;
+        toolbar.insert(separator, -1);
+
+        var toolbar_share = new Gtk.ToolButton(new Gtk.Image.from_icon_name
+            ("emblem-shared",
+            Gtk.IconSize.LARGE_TOOLBAR),
+            "Share");
+        toolbar_share.clicked.connect(() => {
+            if(current_video != null) {
+                string url = "";
+                if(current_video is YouVideo) {
+                    url = "https://youtu.be/" + current_video.id;
+                } else { // is YouPlayList
+                    url = "https://youtube.com/playlist?list=" + current_video.id;
+                }
+                var dialog = new Gtk.MessageDialog.with_markup(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                    Gtk.MessageType.INFO,
+                    Gtk.ButtonsType.CLOSE,
+                    "%s",
+                    url);
+                dialog.title = "Share";                
+                dialog.run();
+                dialog.destroy();
+            }
+        });
+        toolbar.insert(toolbar_share, -1);
+    }
 }
