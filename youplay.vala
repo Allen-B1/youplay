@@ -104,13 +104,26 @@ int main(string[] args) {
     var file_menu = new Gtk.Menu();
     var file_item = new Gtk.MenuItem.with_label("File");
 
+    var about_item = new Gtk.MenuItem.with_label("About");
+    about_item.activate.connect(() => {
+        var dialog = new Gtk.MessageDialog.with_markup(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            Gtk.MessageType.INFO,
+            Gtk.ButtonsType.CLOSE,
+            "<big><b>%s</b></big>\n%s",
+            "About YouPlay",
+            "YouPlay is a minimalistic YouTube player.");
+        dialog.run();
+        dialog.destroy();
+    });
+    file_menu.append(about_item);
+
     var quit_item = new Gtk.MenuItem.with_label("Quit");
     quit_item.activate.connect(() => {
         window.destroy();
     });
+    file_menu.append(quit_item);
     
     file_item.set_submenu(file_menu);
-    file_menu.append(quit_item);
     menubar.append(file_item);
 
 
