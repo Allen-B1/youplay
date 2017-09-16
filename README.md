@@ -8,6 +8,7 @@ Minimalistic youtube player - still in development
 git clone https://github.com/allen-b1/youplay.git/
 cd youplay
 make
+make install USERNAME=your_username
 ```
 
 And to run:
