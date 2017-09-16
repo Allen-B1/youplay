@@ -1,11 +1,11 @@
 all: dependecies build install
 
 dependecies:
-	dpkg -l libwebkit2gtk-4.0-dev || apt install libwebkit2gtk-4.0-dev
-	dpkg -l libgtk-3-dev || apt install libgtk-3-dev
-	dpkg -l valac || apt install valac
-	dpkg -l glib-* || apt install glib-2.0
-	dpkg -l libjson-glib-dev || apt install libjson-glib-dev
+	dpkg -l libwebkit2gtk-4.0-dev || sudo apt install libwebkit2gtk-4.0-dev
+	dpkg -l libgtk-3-dev || sudo apt install libgtk-3-dev
+	dpkg -l valac || sudo apt install valac
+	dpkg -l glib-* || sudo apt install glib-2.0
+	dpkg -l libjson-glib-dev || sudo apt install libjson-glib-dev
 
 build:
 	valac youplay.vala youdata.vala --pkg gtk+-3.0 --pkg json-glib-1.0 --pkg webkit2gtk-4.0
