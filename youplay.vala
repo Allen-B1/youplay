@@ -162,7 +162,7 @@ int main(string[] args) {
 
     // Open video from url
     var toolbar_video = new Gtk.ToolButton(new Gtk.Image.from_icon_name
-        ("media-playback-start",
+        ("list-add",
         Gtk.IconSize.LARGE_TOOLBAR),
         "URL");
     toolbar_video.clicked.connect(() => {
@@ -171,7 +171,7 @@ int main(string[] args) {
     toolbar.insert(toolbar_video, -1);
 
     var toolbar_playlist = new Gtk.ToolButton(new Gtk.Image.from_icon_name
-        ("list-add",
+        ("insert-object",
         Gtk.IconSize.LARGE_TOOLBAR),
         "URL");
     toolbar_playlist.clicked.connect(() => {
