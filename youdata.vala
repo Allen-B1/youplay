@@ -134,7 +134,7 @@ class YouPlayList: YouData {
         this.id = id;
         
         var titleStart = text.str.index_of("<title>") + 7;
-        var titleEnd = text.str.index_of("</", titleStart);
+        var titleEnd = text.str.index_of("</", titleStart) - 10;
 
         this.title = text.str[titleStart:titleEnd];
     }
