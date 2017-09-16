@@ -6,5 +6,4 @@ if [ "$1" = "" ] ; then
 else
 	username=$1
 fi
-make USERNAME=$username
-echo "Installed YouPlay into $username's account"
+make USERNAME=$username && echo "Installed YouPlay into $username's account"
