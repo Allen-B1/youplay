@@ -2,7 +2,7 @@
  */
 
 void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.WebView video_view, bool is_url) {
-    var dialog = new Gtk.Dialog.with_buttons("Load Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
+    var dialog = new Gtk.Dialog.with_buttons("Open Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
         "Done", Gtk.ResponseType.ACCEPT, 
         "Cancel", Gtk.ResponseType.REJECT, null);
 
@@ -46,7 +46,7 @@ void load_video(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.Web
 }
 
 void load_playlist(Gtk.Label title, Gtk.Label author, Gtk.Window window, WebKit.WebView video_view, bool is_url) {
-    var dialog = new Gtk.Dialog.with_buttons("Load Playlist", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
+    var dialog = new Gtk.Dialog.with_buttons("Open Playlist", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
         "Done", Gtk.ResponseType.ACCEPT, 
         "Cancel", Gtk.ResponseType.REJECT, null);
 
