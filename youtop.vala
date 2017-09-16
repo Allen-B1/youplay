@@ -123,5 +123,7 @@ namespace YouTop {
             }
         });
         toolbar.insert(toolbar_share, -1);
+
+        return toolbar;
     }
 }
