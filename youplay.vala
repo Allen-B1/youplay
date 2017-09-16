@@ -185,14 +185,16 @@ int main(string[] args) {
     video_view.hexpand = true;
     video_view.halign = video_view.valign = Gtk.Align.START;
     video_view.set_size_request(850, 850 * 9 / 16);
+    video_view.load_uri("https://raw.githubusercontent.com/Allen-B1/youplay/master/icon.png");
 
-    author = new Gtk.Label(null);
+    author = new Gtk.Label("Welcome to YouPlay! Get started by opening a video.");
     author.hexpand = true;
     author.halign = author.valign = Gtk.Align.START;
     author.margin = 12;
     author.margin_top = 0;
 
     title = new Gtk.Label(null);
+    title.set_markup("<big><b>Welcome!</b></big>");
     title.hexpand = true;
     title.halign = title.valign = Gtk.Align.START;
     title.margin = 12;
