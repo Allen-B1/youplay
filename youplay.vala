@@ -92,7 +92,7 @@ int main(string[] args) {
     var window = new Gtk.Window();
     window.title = "YouPlay";
     window.set_position(Gtk.WindowPosition.CENTER);
-    window.set_default_size(850, 450);
+    window.set_default_size(750, 450);
     window.destroy.connect(Gtk.main_quit);
 
     var root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
@@ -184,7 +184,7 @@ int main(string[] args) {
     video_view = new WebKit.WebView();
     video_view.hexpand = true;
     video_view.halign = video_view.valign = Gtk.Align.START;
-    video_view.set_size_request(850, 850 * 9 / 16);
+    video_view.set_size_request(750, 750 * 9 / 16);
     video_view.load_uri("https://raw.githubusercontent.com/Allen-B1/youplay/master/icon.png");
 
     author = new Gtk.Label("Welcome to YouPlay! Get started by opening a video.");

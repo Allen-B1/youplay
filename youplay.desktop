@@ -1,6 +1,8 @@
 [Desktop Entry]
 Name=YouPlay
+Comment=A minimalistic YouTube player
 Exec=bash -c "~/YouPlay/youplay" dummy %k
 Icon=/home/username/YouPlay/icon.png
 Categories=AudioVideo;Video;Player;TV;
 Type=Application
+Keywords=YouTube;
