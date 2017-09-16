@@ -8,13 +8,11 @@ Minimalistic youtube player - still in development
 git clone https://github.com/allen-b1/youplay.git/
 cd youplay
 make
+make install USERNAME=your_username
 ```
 
-And to run:
+An item for YouPlay should appear in the application menu. If not, restart the computer.
 
-```bash
-./youplay
-```
 ## Features
 * Watch videos
 * Watch playlist
