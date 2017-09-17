@@ -5,7 +5,6 @@ Gtk.Label title = null;
 Gtk.Label author = null;
 WebKit.WebView video_view = null;
 Gtk.Window window = null;
-YouData current_video = null;
 Gtk.Notebook notebook;
 
 void load_video(bool is_url) {
@@ -32,12 +31,10 @@ void load_video(bool is_url) {
         dialog.destroy();
 
         if(data.is_valid) {
-            current_video = data as YouData;
-
             stdout.puts(data.embed + "\n");
-            video_view.load_uri(data.embed);
-            title.set_markup("<big><b>" + data.title + "</b></big>");
-            author.set_text(data.author);
+            
+            var video_view = new YouVideoView(data);
+            video_view.add_to(notebook);
         } else {
             var error_msg = new Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
                 Gtk.MessageType.ERROR,
@@ -72,15 +69,12 @@ void load_playlist(bool is_url) {
     switch(result) {
     case Gtk.ResponseType.ACCEPT:
         var data = new YouPlayList.with_id(entry.text);
+
         dialog.destroy();
-
+        
         if(data.is_valid) {
-            current_video = data as YouData;
-
-            stdout.puts(data.embed + "\n");
-            video_view.load_uri(data.embed);
-            title.set_markup("<big><b>" + data.title + "</b></big>");
-            author.set_text("Unknown");
+            var video_view = new YouVideoView(data);
+            video_view.add_to(notebook);
         } else {
             var error_msg = new Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
                 Gtk.MessageType.ERROR,
@@ -101,7 +95,6 @@ void load_playlist(bool is_url) {
 int main(string[] args) {
     Gtk.init(ref args);
     
-
     // Initialize Window
     window = new Gtk.Window();
     window.title = "YouPlay";
@@ -130,40 +123,6 @@ int main(string[] args) {
     start_screen.pack_start(welcome_title, true, true, 0);
     start_screen.pack_start(welcome_text, true, true, 0);
     notebook.append_page(start_screen, new Gtk.Label("Welcome"));
-
-    // Actual video viewing thing
-    var content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-    content.valign = Gtk.Align.START;
-    content.hexpand = true;
-    content.vexpand = false;
-    notebook.append_page(content, new Gtk.Label("Video"));
-
-    video_view = new WebKit.WebView();
-    video_view.hexpand = true;
-    video_view.halign = video_view.valign = Gtk.Align.START;
-    video_view.set_size_request(750, 750 * 9 / 16);
-    Gdk.threads_add_idle(() => {
-        int w, h;
-        window.get_size(out w, out h);
-        video_view.set_size_request(w - 160, 500);
-        return true;
-    });
-
-    author = new Gtk.Label("Unknown");
-    author.hexpand = true;
-    author.halign = author.valign = Gtk.Align.START;
-    author.margin = 12;
-    author.margin_top = 0;
-
-    title = new Gtk.Label(null);
-    title.set_markup("<big><b>N/A</b></big>");
-    title.hexpand = true;
-    title.halign = title.valign = Gtk.Align.START;
-    title.margin = 12;
-
-    content.add(video_view);
-    content.add(title);
-    content.add(author);
 
     window.add(root);
 

@@ -105,7 +105,7 @@ namespace YouTop {
             Gtk.IconSize.LARGE_TOOLBAR),
             "Share");
         toolbar_share.clicked.connect(() => {
-            if(current_video != null) {
+            /*if(current_video != null) {
                 string url = "";
                 if(current_video is YouVideo) {
                     url = "https://youtu.be/" + current_video.id;
@@ -120,7 +120,15 @@ namespace YouTop {
                 dialog.title = "Share";                
                 dialog.run();
                 dialog.destroy();
-            }
+            }*/
+            var dialog = new Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                Gtk.MessageType.INFO,
+                Gtk.ButtonsType.CLOSE,
+                "Unfortunately, sharing is not available yet.");
+
+            dialog.title = "Share";                
+            dialog.run();
+            dialog.destroy();
         });
         toolbar.insert(toolbar_share, -1);
 

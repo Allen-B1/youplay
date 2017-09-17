@@ -10,7 +10,7 @@
 abstract class YouData {
     public string title;
     public string embed;
-    public string? id; // if null, video doesn't exist
+    public string? id;
 
     public bool is_valid { get {
         return this.id != null;
@@ -35,8 +35,6 @@ class YouVideo : YouData {
     }
 
     public YouVideo.with_id(string id) {
-        this.id = id;
-
         stdout.puts("https://youtu.be/" + id);
         stdout.flush();
 
@@ -80,7 +78,8 @@ class YouVideo : YouData {
             this.title = ("URL or video ID is invalid: " + err.message);
             return;
         }
-        return;
+
+        this.id = id;
     }
 
     public YouVideo.with_url(string url) {
@@ -93,13 +92,16 @@ class YouVideo : YouData {
             startIndex = url.index_of("v=") + 2;
             endIndex = url.index_of("&", startIndex + 1) + 1;
         }
+
+
         string id;
         if(endIndex == 0 || endIndex == -1)
             id = url[startIndex:url.length];
         else
             id = url[startIndex:endIndex];
+
         this.with_id(id);
-    }   
+    }
 }
 
 class YouPlayList: YouData {
