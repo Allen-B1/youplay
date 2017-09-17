@@ -5,10 +5,8 @@ Gtk.Label title = null;
 Gtk.Label author = null;
 WebKit.WebView video_view = null;
 Gtk.Window window = null;
-Gtk.Box root = null;
-Gtk.Box content = null;
-Gtk.Box start_screen = null;
 YouData current_video = null;
+Gtk.Notebook notebook;
 
 void load_video(bool is_url) {
     var dialog = new Gtk.Dialog.with_buttons("Open Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
@@ -111,7 +109,7 @@ int main(string[] args) {
     window.set_default_size(750, 450);
     window.destroy.connect(Gtk.main_quit);
 
-    root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+    var root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
     var menubar = YouTop.create_menu(load_video, load_playlist);
     root.pack_start(menubar, false, false, 0);
@@ -119,11 +117,11 @@ int main(string[] args) {
     var toolbar = YouTop.create_toolbar(load_video, load_playlist);
     root.pack_start(toolbar, false, false, 0);
 
-    var notebook = new Gtk.Notebook();
+    notebook = new Gtk.Notebook();
     root.pack_start(notebook, true, true, 0);
 
     // Start screen
-    start_screen = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+    var start_screen = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
     var welcome_title = new Gtk.Label(null);
     welcome_title.set_markup("<big><b>Welcome!</b></big>");
     welcome_title.yalign = 1;
@@ -134,7 +132,7 @@ int main(string[] args) {
     notebook.append_page(start_screen, new Gtk.Label("Welcome"));
 
     // Actual video viewing thing
-    content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+    var content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
     content.valign = Gtk.Align.START;
     content.hexpand = true;
     content.vexpand = false;
