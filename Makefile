@@ -10,7 +10,7 @@ dependecies:
 	dpkg -l libjson-glib-dev || sudo apt install libjson-glib-dev
 
 build:
-	valac youplay.vala youdata.vala youtop.vala --pkg gtk+-3.0 --pkg json-glib-1.0 --pkg webkit2gtk-4.0 -o youplay
+	valac YouPlay.vala YouData.vala YouTop.vala YouVideoView.vala --pkg gtk+-3.0 --pkg json-glib-1.0 --pkg webkit2gtk-4.0 -o youplay
 
 install:
 	mkdir ~/YouPlay || true
