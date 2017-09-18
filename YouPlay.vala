@@ -101,14 +101,10 @@ int main(string[] args) {
     window.set_position(Gtk.WindowPosition.CENTER);
     window.set_default_size(750, 450);
     window.destroy.connect(Gtk.main_quit);
+    var headerbar = YouTop.create_headerbar(load_video, load_playlist);
+    window.set_titlebar(headerbar);
 
     var root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-
-    var menubar = YouTop.create_menu(load_video, load_playlist);
-    root.pack_start(menubar, false, false, 0);
-
-    var toolbar = YouTop.create_toolbar(load_video, load_playlist);
-    root.pack_start(toolbar, false, false, 0);
 
     notebook = new Gtk.Notebook();
     root.pack_start(notebook, true, true, 0);
