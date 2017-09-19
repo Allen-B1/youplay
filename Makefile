@@ -8,6 +8,7 @@ dependecies:
 	dpkg -l valac || sudo apt install valac
 	dpkg -l glib-* || sudo apt install glib-2.0
 	dpkg -l libjson-glib-dev || sudo apt install libjson-glib-dev
+	dpkg -l libgranite-dev || sudo apt install libgranite-dev
 
 build:
 	valac YouPlay.vala YouData.vala YouTop.vala YouVideoView.vala --pkg gtk+-3.0 --pkg json-glib-1.0 --pkg webkit2gtk-4.0 -o youplay

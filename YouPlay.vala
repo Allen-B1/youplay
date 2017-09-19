@@ -1,19 +1,16 @@
 /* YouPlay
  */
 
-Gtk.Label title = null;
-Gtk.Label author = null;
-WebKit.WebView video_view = null;
 Gtk.Window window = null;
 Gtk.Notebook notebook;
 
-void load_video(bool is_url) {
+void load_video() {
     var dialog = new Gtk.Dialog.with_buttons("Open Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
         "Done", Gtk.ResponseType.ACCEPT, 
         "Cancel", Gtk.ResponseType.REJECT, null);
 
     var content_area = dialog.get_content_area();
-    content_area.add(new Gtk.Label("Enter video " + (is_url ? "URL" : "ID")));
+    content_area.add(new Gtk.Label("Enter video URL"));
 
     var entry = new Gtk.Entry();
     entry.margin = 4;
@@ -24,10 +21,7 @@ void load_video(bool is_url) {
     switch(result) {
     case Gtk.ResponseType.ACCEPT:
         YouVideo data;
-        if(is_url)
-            data = new YouVideo.with_url(entry.text);
-        else
-            data = new YouVideo.with_id(entry.text);
+        data = new YouVideo.with_url(entry.text);
         dialog.destroy();
 
         if(data.is_valid) {
@@ -52,13 +46,13 @@ void load_video(bool is_url) {
     }
 }
 
-void load_playlist(bool is_url) {
+void load_playlist() {
     var dialog = new Gtk.Dialog.with_buttons("Open Playlist", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
         "Done", Gtk.ResponseType.ACCEPT, 
         "Cancel", Gtk.ResponseType.REJECT, null);
 
     var content_area = dialog.get_content_area();
-    content_area.add(new Gtk.Label("Enter playlist " + (is_url ? "URL" : "ID")));
+    content_area.add(new Gtk.Label("Enter playlist URL"));
 
     var entry = new Gtk.Entry();
     entry.margin = 4;
@@ -68,8 +62,7 @@ void load_playlist(bool is_url) {
     int result = dialog.run();
     switch(result) {
     case Gtk.ResponseType.ACCEPT:
-        var data = new YouPlayList.with_id(entry.text);
-
+        var data = new YouPlayList.with_url(entry.text);
         dialog.destroy();
         
         if(data.is_valid) {
@@ -80,7 +73,7 @@ void load_playlist(bool is_url) {
                 Gtk.MessageType.ERROR,
                 Gtk.ButtonsType.CLOSE,
                 "%s",
-                data.error);
+                data.error == null ? "An error occured" : data.error);
 
             error_msg.run();
             error_msg.close();

@@ -110,7 +110,9 @@ class YouPlayList: YouData {
         this.title = "";
         this.id = null;
     }
-    public YouPlayList.with_id(string id) {
+    public YouPlayList.with_id(string? id) {
+        if(id == null) return;
+
         this.embed = "http://youtube.com/embed?listType=playlist&list=" + id + "&rel=0&fs=0";
         var f = File.new_for_uri(this.embed);
         DataInputStream data_stream = null;
@@ -139,5 +141,19 @@ class YouPlayList: YouData {
         var titleEnd = text.str.index_of("</", titleStart) - 10;
 
         this.title = text.str[titleStart:titleEnd];
+    }
+    public YouPlayList.with_url(string url) {
+        var startIndex = 0;
+        var endIndex = 0;
+        startIndex = url.index_of("list=") + 5;
+        endIndex = url.index_of("&", startIndex);
+        string id;
+        if(endIndex == 0 || endIndex == -1)
+            id = url[startIndex:url.length];
+        else
+            id = url[startIndex:endIndex];
+
+        if(this.id != null)
+           this.with_id(id);
     }
 }

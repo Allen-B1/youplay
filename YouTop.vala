@@ -1,5 +1,5 @@
 namespace YouTop {
-    delegate void LoadFunc(bool is_url);
+    delegate void LoadFunc();
 
     Gtk.HeaderBar create_headerbar(LoadFunc load_video, LoadFunc load_playlist) {// headerbar
         var headerbar = new Gtk.HeaderBar();
@@ -13,7 +13,7 @@ namespace YouTop {
             Gtk.IconSize.SMALL_TOOLBAR),
             "Video");
         headerbar_video.clicked.connect(() => {
-            load_video(true);
+            load_video();
         });
         headerbar.add(headerbar_video);
 
@@ -22,7 +22,7 @@ namespace YouTop {
             Gtk.IconSize.LARGE_TOOLBAR),
             "Playlist");
         headerbar_playlist.clicked.connect(() => {
-            load_playlist(false);
+            load_playlist();
         });
         headerbar.add(headerbar_playlist);
 

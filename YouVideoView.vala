@@ -8,7 +8,7 @@ class YouVideoView : Gtk.Box {
         this.vexpand = false;
         this.data = video;
 
-        video_view = new WebKit.WebView();
+        var video_view = new WebKit.WebView();
         video_view.hexpand = true;
         video_view.halign = video_view.valign = Gtk.Align.START;
         video_view.set_size_request(750, 750 * 9 / 16);
@@ -20,15 +20,19 @@ class YouVideoView : Gtk.Box {
             return true;
         });
 
+        var author = new Gtk.Label(null);
+        author.hexpand = true;
+        author.halign = author.valign = Gtk.Align.START;
+        author.margin = 12;
+        author.margin_top = 0;
+
         if(this.data is YouVideo) {
-            author = new Gtk.Label(((YouVideo)this.data).author);
-            author.hexpand = true;
-            author.halign = author.valign = Gtk.Align.START;
-            author.margin = 12;
-            author.margin_top = 0;
+            author.set_text(((YouVideo)this.data).author);
+        } else {
+            author.set_text("Unknown");
         }
 
-        title = new Gtk.Label(null);
+        var title = new Gtk.Label(null);
         title.set_markup("<big><b>" + this.data.title + "</b></big>");
         title.hexpand = true;
         title.halign = title.valign = Gtk.Align.START;
