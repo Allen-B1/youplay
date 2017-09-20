@@ -6,17 +6,11 @@ A minimalistic youtube player - for linux
 
 ## Installation
 ### Easier Installation
-Download [install.sh](https://raw.githubusercontent.com/Allen-B1/youplay/master/install.sh) and execute it (in a terminal).
-
 ```bash
-./install.sh
+sh youplay-install.sh
 ```
 
-or
-
-```bash
-sh install.sh
-```
+<a href="install.sh" download="youplay-install.sh">Download</a>
 
 ### Alternate Installation
 ```bash
