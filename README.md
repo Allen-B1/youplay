@@ -10,7 +10,7 @@ A minimalistic youtube player - for linux
 sh youplay-install.sh
 ```
 
-<a href="install.sh" download="youplay-install.sh">Download</a>
+<a href="youplay-install.sh" download="youplay-install.sh">Download</a>
 
 ### Alternate Installation
 ```bash
