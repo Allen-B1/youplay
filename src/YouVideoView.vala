@@ -43,11 +43,9 @@ class YouVideoView : Gtk.Box {
         this.add(author);
     }
 
-    public void add_to(Granite.Widgets.DynamicNotebook notebook) {
+    public void add_to(Gtk.Notebook notebook) {
         this.show_all();
 
-        var tab = new Granite.Widgets.Tab(this.data.title, null, this);
-
-        notebook.insert_tab(tab, -1);
+        notebook.append_page(this, new Gtk.Label(this.data.title));
     }
 }

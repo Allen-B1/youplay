@@ -2,7 +2,7 @@
  */
 
 Gtk.Window window = null;
-Granite.Widgets.DynamicNotebook notebook;
+Gtk.Notebook notebook;
 
 void load_video() {
     var dialog = new Gtk.Dialog.with_buttons("Open Video", window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, 
@@ -94,15 +94,12 @@ int main(string[] args) {
     window.set_position(Gtk.WindowPosition.CENTER);
     window.set_default_size(750, 450);
     window.destroy.connect(Gtk.main_quit);
-    var headerbar = YouTop.create_headerbar(load_video, load_playlist);
+    var headerbar = new YouHeaderBar(load_video, load_playlist);
     window.set_titlebar(headerbar);
 
     var root = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
-    notebook = new Granite.Widgets.DynamicNotebook();
-    notebook.new_tab_requested.connect(() => {
-        load_video();
-    });
+    notebook = new Gtk.Notebook();
     root.pack_start(notebook, true, true, 0);
 
     // Start screen
@@ -115,9 +112,7 @@ int main(string[] args) {
     start_screen.pack_start(welcome_title, true, true, 0);
     start_screen.pack_start(welcome_text, true, true, 0);
 
-    var tab = new Granite.Widgets.Tab("Welcome", null, start_screen);
-
-    notebook.insert_tab(tab, -1);
+    notebook.append_page(start_screen, new Gtk.Label("Welcome!"));
 
     window.add(root);
 
