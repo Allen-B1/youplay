@@ -63,7 +63,7 @@ void load_playlist() {
     switch(result) {
     case Gtk.ResponseType.ACCEPT:
         var data = new YouPlayList.with_url(entry.text);
-        dialog.destroy()
+        dialog.destroy();
         
         if(data.is_valid) {
             var video_view = new YouVideoView(data);
