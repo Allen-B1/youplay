@@ -13,12 +13,6 @@ class YouVideoView : Gtk.Box {
         video_view.halign = video_view.valign = Gtk.Align.START;
         video_view.set_size_request(750, 750 * 9 / 16);
         video_view.load_uri(video.embed);
-        Gdk.threads_add_idle(() => {
-            int w, h;
-            window.get_size(out w, out h);
-            video_view.set_size_request(w - 160, 500);
-            return true;
-        });
 
         var author = new Gtk.Label(null);
         author.hexpand = true;

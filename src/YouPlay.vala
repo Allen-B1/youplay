@@ -29,6 +29,8 @@ void load_video() {
             
             var video_view = new YouVideoView(data);
             video_view.add_to(notebook);
+
+            stdout.puts("Done\n");
         } else {
             var error_msg = new Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
                 Gtk.MessageType.ERROR,
