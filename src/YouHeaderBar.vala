@@ -4,18 +4,18 @@ class YouHeaderBar : Gtk.HeaderBar {
     public YouHeaderBar(LoadFunc load_video, LoadFunc load_playlist) {// headerbar
         this.show_close_button = true;
         this.title = "YouPlay";
-        this.subtitle = "Welcome";
+        this.has_subtitle = false;
 
         // Open video from url
         var headerbar_video = new Gtk.ToolButton(new Gtk.Image.from_icon_name
-            ("list-add",
-            Gtk.IconSize.SMALL_TOOLBAR),
+            ("document-import",
+            Gtk.IconSize.LARGE_TOOLBAR),
             "Video");
         headerbar_video.clicked.connect(() => {
             load_video();
             stdout.puts("Done\n");
         });
-        this.add(headerbar_video);
+        this.pack_start(headerbar_video);
 
         var headerbar_playlist = new Gtk.ToolButton(new Gtk.Image.from_icon_name
             ("insert-object",
@@ -24,11 +24,7 @@ class YouHeaderBar : Gtk.HeaderBar {
         headerbar_playlist.clicked.connect(() => {
             load_playlist();
         });
-        this.add(headerbar_playlist);
-
-        var separator = new Gtk.SeparatorToolItem();
-        separator.draw = true;
-        this.add(separator);
+        this.pack_start(headerbar_playlist);
 
         var headerbar_share = new Gtk.ToolButton(new Gtk.Image.from_icon_name
             ("emblem-shared",
@@ -60,6 +56,6 @@ class YouHeaderBar : Gtk.HeaderBar {
             dialog.run();
             dialog.destroy();
         });
-        this.add(headerbar_share);
+        this.pack_end(headerbar_share);
     }
 }
