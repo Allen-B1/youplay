@@ -89,13 +89,24 @@ void load_playlist() {
 
 int main(string[] args) {
     Gtk.init(ref args);
-    
+
     // Initialize Window
     window = new Gtk.Window();
     window.title = "YouPlay";
     window.set_position(Gtk.WindowPosition.CENTER);
     window.set_default_size(750, 450);
     window.destroy.connect(Gtk.main_quit);
+
+    // Contestual stylesheet
+    string STYLESHEET = """
+        @define-color colorPrimary #df3f3f;
+        @define-color textColorPrimary #f2f2f2;
+        @define-color textColorPrimaryShadow #7b1b1b;
+    """;
+    var provider = new Gtk.CssProvider();
+    provider.load_from_data(STYLESHEET, -1);
+    Gtk.StyleContext.add_provider_for_screen(window.get_screen(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
     var headerbar = new YouHeaderBar(load_video, load_playlist);
     window.set_titlebar(headerbar);
 

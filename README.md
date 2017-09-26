@@ -1,8 +1,7 @@
 # youplay
 A minimalistic youtube player - for linux  
 
-![Screenshot](YouPlay-start-10.png)
-![Screenshot](YouPlay-video-10.png)
+![Screenshot](screenshot.png)
 
 ## Installation
 ### Easier Installation
